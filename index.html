@@ -1,324 +1,60 @@
-<!DOCTYPE html>
-<html lang="sk">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="sk" lang="sk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Brawl Stars Cards</title>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; font-size: 13px; background: #f5f5f5; color: #222; }
-
-  .wrap { max-width: 960px; margin: 0 auto; padding: 16px; }
-
-  h1 {
-    font-size: 16px; font-weight: bold; text-align: center;
-    letter-spacing: 4px; margin-bottom: 14px;
-    padding-bottom: 10px; border-bottom: 2px solid #333;
-  }
-
-  /* 4-column grid */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0 12px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 10px;
-  }
-
-  .group-hdr {
-    display: grid;
-    grid-template-columns: 24px 88px 26px 52px;
-    padding: 4px 2px;
-    border-bottom: 2px solid #333;
-    margin-bottom: 2px;
-  }
-  .group-hdr span {
-    font-size: 11px; font-weight: bold; color: #555;
-    text-align: center;
-  }
-  .group-hdr span:first-child { text-align: left; }
-
-  .row {
-    display: grid;
-    grid-template-columns: 24px 88px 26px 52px;
-    align-items: center;
-    height: 24px;
-    border-bottom: 1px solid #eee;
-  }
-  .row:hover { background: #f0f7ff; }
-
-  .cid {
-    font-size: 11px; color: #555; padding-left: 2px;
-    white-space: nowrap; overflow: hidden;
-  }
-  .cid .num { font-weight: bold; color: #333; }
-  .cid .nm  { font-size: 10px; color: #999; margin-left: 2px; }
-
-  .chk {
-    width: 20px; height: 20px;
-    border-radius: 3px;
-    border: 1.5px solid #aaa;
-    background: #fff;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: transparent;
-    margin: 0 auto;
-    transition: all 0.1s;
-  }
-  .chk.on { background: #22c55e; border-color: #16a34a; color: #fff; }
-
-  .dup {
-    display: flex; align-items: center; gap: 2px; padding-left: 4px;
-  }
-  .dup button {
-    width: 16px; height: 16px;
-    border-radius: 3px;
-    border: 1px solid #ccc;
-    background: #f5f5f5;
-    cursor: pointer;
-    font-size: 12px; font-weight: bold;
-    display: flex; align-items: center; justify-content: center;
-    color: #555; padding: 0; line-height: 1;
-  }
-  .dup button:hover { background: #e0e0e0; }
-  .dup button:disabled { opacity: 0.25; cursor: not-allowed; }
-  .dup-n {
-    min-width: 16px; text-align: center;
-    font-size: 12px; font-weight: bold; color: #333;
-  }
-  .dup-n.z { color: #ccc; }
-
-  /* Footer stats */
-  .footer {
-    margin-top: 14px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-  .stat-box {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 10px;
-    text-align: center;
-  }
-  .stat-n { font-size: 24px; font-weight: bold; color: #333; }
-  .stat-n.g { color: #16a34a; }
-  .stat-n.r { color: #dc2626; }
-  .stat-n.a { color: #d97706; }
-  .stat-l { font-size: 11px; color: #888; margin-top: 2px; }
-
-  /* Export */
-  .exp-section {
-    margin-top: 14px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    padding: 12px;
-  }
-  .exp-title { font-size: 13px; font-weight: bold; margin-bottom: 8px; }
-  .exp-row { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; align-items: center; }
-  .btn {
-    height: 30px; padding: 0 12px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    background: #fff;
-    cursor: pointer;
-    font-size: 12px; font-weight: bold; color: #555;
-    transition: all 0.1s;
-  }
-  .btn:hover { background: #f0f0f0; }
-  .btn.act { background: #3b82f6; color: #fff; border-color: #2563eb; }
-  .btn.cp  { background: #22c55e; color: #fff; border-color: #16a34a; }
-  .btn.danger { color: #dc2626; border-color: #fca5a5; }
-  .btn.danger:hover { background: #fef2f2; }
-  .exp-cnt { font-size: 12px; color: #888; }
-  .exp-box {
-    background: #f9f9f9;
-    border: 1px solid #e5e5e5;
-    border-radius: 4px;
-    padding: 10px;
-    font-family: 'Courier New', monospace;
-    font-size: 12px;
-    line-height: 1.8;
-    color: #333;
-    white-space: pre-wrap;
-    max-height: 220px;
-    overflow-y: auto;
-  }
-  .progress-wrap {
-    display: flex; align-items: center; gap: 10px;
-    margin-top: 10px;
-  }
-  .progress-bar {
-    flex: 1; height: 8px;
-    background: #e5e5e5; border-radius: 4px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; background: #22c55e; border-radius: 4px;
-    transition: width 0.3s;
-  }
-  .progress-pct { font-size: 13px; font-weight: bold; color: #16a34a; min-width: 36px; }
-</style>
+<meta name="Description" content="Profesionálne ýškové práce" />
+<meta name="Keywords" content="výškové práce, výška, lanom, lano, práca na lane, umývanie okien, strecha, strechy, opravy, stožiare, extrémne práce, čistenie, služby" />
+<meta http-equiv="Content-language" content="sk"> 
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1250" />
+<meta name="Author" content="Marek Šárközi - outside@outside.sk" />
+<title>OUTSIDE - profesionálne výškové práce</title></head>
+<!-- stylesheets -->
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/light.css" rel="stylesheet" type="text/css">
+<!-- modernizr enables HTML5 elements and feature detects -->
+<script type="text/javascript" src="js/modernizr-1.5.min.js"></script>
 </head>
+
 <body>
-<div class="wrap">
-  <h1>B R A W L &nbsp; S T A R S &nbsp; C A R D S</h1>
+  <div id="main">
 
-  <div class="grid" id="grid"></div>
-
-  <div class="footer" id="footer"></div>
-
-  <div class="progress-wrap">
-    <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
-    <span class="progress-pct" id="prog-pct">0%</span>
-    <button class="btn danger" onclick="resetAll()" style="margin-left:auto">Reset zbierky</button>
-  </div>
-
-  <div class="exp-section">
-    <div class="exp-title">Export zoznamu</div>
-    <div class="exp-row">
-      <button class="btn act" id="eb-o" onclick="setET('o')">Vlastnené</button>
-      <button class="btn" id="eb-m" onclick="setET('m')">Chýbajúce</button>
-      <span class="exp-cnt" id="exp-cnt"></span>
-      <button class="btn" id="cp-btn" onclick="copyExp()" style="margin-left:auto">Kopírovať do schránky</button>
-    </div>
-    <div class="exp-box" id="exp-box"></div>
-  </div>
+    <!-- begin header -->
+    <header><div id="logo"><h1>O U T S I D E</h1></div>
+      <nav><ul class="sf-menu" id="nav">
+<li class="selected"><a href="index.html">home</a></li>
+          <li><a href="about.html">o nás</a></li>
+          
+          <li><a href="blog.html">blog</a></li>
+          <li><a href="contact.php">kontakt</a></li>
+        </ul></nav></header>
+        <!-- end header -->
+        
+        <!-- begin content --><div id="site_content">
+      <ul class="slideshow">
+<li class="show"><img width="950" height="450" src="images/outside90.jpg" alt="&quot;Vitajte na našej prezentácii profesionálnych výškových prác.&quot;"></li>
+        <li><img width="950" height="450" src="images/stoziare.jpg" alt="&quot;Demontáže - Montáže - Servis Technických zariadení a objektov.&quot;"></li>
+        <li><img width="950" height="450" src="images/priehrady.jpg" alt="&quot;Servisné a opravné práce na priemyselných objektoch a konštrukciách.&quot;"></li>
+        <li><img width="950" height="450" src="images/stromy.jpg" alt="&quot;Orezy, výruby stromov ohrozujúce zdravie a majetok.&quot;"></li>
+        <li><img width="950" height="450" src="images/sparovanie.jpg" alt="&quot;Práce na bytových domoch - špárovanie, čistenie, nátery, montáže technických zariadení.&quot;"></li>
+        <li><img width="950" height="450" src="images/strechy.jpg" alt="&quot;Nátery, opravy plochých a šikmých striech, opravy žľabov a zvodov, komínov a detailov striech.&quot;"></li>
+        <li><img width="950" height="450" src="images/boardy.jpg" alt="&quot;Vešanie, lepenie, montáž reklamných boardov.&quot;"></li>
+        <li><img width="950" height="450" src="images/boardy01.jpg" alt="&quot;Vešanie, lepenie, montáž reklamných boardov.&quot;"></li>
+        <li><img width="950" height="450" src="images/sochy.jpg" alt="&quot;Realizácia školských, firemných či reklamných projektov.&quot;"></li>
+        <li><img width="950" height="450" src="images/mesto.jpg" alt="&quot;Ponúkame Vám serióznu a profesionálnu spoluprácu pri riešení Vaších požiadaviek.&quot;"></li>
+      </ul>
 </div>
+    <!-- end content -->
 
-<script>
-const NAMES = {
-  1:"?",2:"Colt",3:"Leon",4:"Edgar",5:"Shelly",6:"Rico",7:"8-Bit",8:"Spike",9:"Nita",
-  10:"Mortis",11:"Jessie",12:"Crow",13:"Barley",14:"Brock",15:"Bull",16:"Bo",
-  17:"Edgar",18:"Spike",19:"8-Bit",20:"Carl",21:"Chester",22:"Clancy",23:"Colette",
-  24:"Colt",25:"Eve",26:"Lola",27:"Moe",28:"Nita",29:"Pearl",30:"R-T",31:"Rico",
-  32:"Shelly",33:"Spike",34:"Surge",35:"Tara",36:"Amber",37:"Bo",38:"Charlie",
-  39:"Chuck",40:"EMZ",41:"Gale",42:"Gene",43:"Angelo",44:"Jessie",45:"Lou",
-  46:"Mr.P",47:"Otis",48:"Penny",49:"Sandy",50:"Squeak",51:"Willow",52:"Angelo",
-  53:"Bea",54:"Belle",55:"Bonnie",56:"Brock",57:"Janet",58:"Maisie",59:"Mandy",
-  60:"Nani",61:"Piper",62:"Ash",63:"Bibi",64:"Bull",65:"Buster",66:"Darryl",
-  67:"Draco",68:"El Primo",69:"Frank",70:"Hank",71:"Jacky",72:"Meg",73:"Rosa",
-  74:"Barley",75:"Dynamike",76:"Grom",77:"L&L",78:"Sprout",79:"Tick",80:"Berry",
-  81:"Byron",82:"Doug",83:"Gray",84:"Gus",85:"Kit",86:"Max",87:"Pam",88:"Poco",
-  89:"Ruffs",90:"Buzz",91:"Cordelius",92:"Crow",93:"Edgar",94:"Chester",95:"Kenji",
-  96:"Leon",97:"Lily",98:"Melodie",99:"Mico",100:"Mortis",101:"Sam",102:"Stu"
-};
-for (let i = 103; i <= 180; i++) NAMES[i] = "Puzzle";
-
-const INIT = {"1":{o:false,d:0},"2":{o:true,d:0},"3":{o:true,d:1},"4":{o:false,d:0},"5":{o:true,d:0},"6":{o:true,d:0},"7":{o:false,d:0},"8":{o:true,d:0},"9":{o:true,d:0},"10":{o:true,d:0},"11":{o:true,d:1},"12":{o:true,d:0},"13":{o:true,d:0},"14":{o:false,d:0},"15":{o:false,d:0},"16":{o:false,d:0},"17":{o:true,d:0},"18":{o:false,d:0},"19":{o:false,d:0},"20":{o:false,d:0},"21":{o:false,d:0},"22":{o:false,d:0},"23":{o:true,d:1},"24":{o:true,d:0},"25":{o:true,d:0},"26":{o:true,d:0},"27":{o:true,d:0},"28":{o:true,d:0},"29":{o:false,d:0},"30":{o:true,d:0},"31":{o:false,d:0},"32":{o:false,d:0},"33":{o:false,d:0},"34":{o:false,d:0},"35":{o:false,d:0},"36":{o:true,d:2},"37":{o:false,d:0},"38":{o:true,d:1},"39":{o:true,d:0},"40":{o:true,d:0},"41":{o:false,d:0},"42":{o:true,d:0},"43":{o:true,d:0},"44":{o:true,d:0},"45":{o:true,d:0},"46":{o:false,d:0},"47":{o:false,d:0},"48":{o:false,d:0},"49":{o:false,d:0},"50":{o:false,d:0},"51":{o:true,d:0},"52":{o:true,d:0},"53":{o:true,d:0},"54":{o:true,d:0},"55":{o:true,d:2},"56":{o:true,d:0},"57":{o:true,d:1},"58":{o:false,d:0},"59":{o:true,d:0},"60":{o:true,d:0},"61":{o:true,d:0},"62":{o:false,d:0},"63":{o:true,d:0},"64":{o:true,d:0},"65":{o:false,d:0},"66":{o:false,d:0},"67":{o:true,d:0},"68":{o:true,d:2},"69":{o:true,d:2},"70":{o:true,d:0},"71":{o:true,d:0},"72":{o:true,d:0},"73":{o:true,d:0},"74":{o:true,d:0},"75":{o:false,d:0},"76":{o:false,d:0},"77":{o:false,d:0},"78":{o:false,d:0},"79":{o:true,d:0},"80":{o:true,d:1},"81":{o:true,d:0},"82":{o:false,d:0},"83":{o:true,d:1},"84":{o:true,d:0},"85":{o:true,d:0},"86":{o:true,d:0},"87":{o:false,d:0},"88":{o:false,d:0},"89":{o:false,d:0},"90":{o:false,d:0},"91":{o:true,d:0},"92":{o:false,d:0},"93":{o:false,d:0},"94":{o:false,d:0},"95":{o:true,d:0},"96":{o:false,d:0},"97":{o:true,d:0},"98":{o:false,d:0},"99":{o:true,d:1},"100":{o:false,d:0},"101":{o:false,d:0},"102":{o:false,d:0},"103":{o:true,d:1},"104":{o:false,d:0},"105":{o:false,d:0},"106":{o:true,d:0},"107":{o:false,d:0},"108":{o:false,d:0},"109":{o:false,d:0},"110":{o:true,d:2},"111":{o:true,d:0},"112":{o:true,d:0},"113":{o:true,d:0},"114":{o:false,d:0},"115":{o:false,d:0},"116":{o:false,d:0},"117":{o:true,d:0},"118":{o:true,d:0},"119":{o:true,d:1},"120":{o:false,d:0},"121":{o:true,d:0},"122":{o:true,d:0},"123":{o:false,d:0},"124":{o:false,d:0},"125":{o:true,d:0},"126":{o:true,d:1},"127":{o:true,d:0},"128":{o:false,d:0},"129":{o:true,d:0},"130":{o:true,d:0},"131":{o:false,d:0},"132":{o:false,d:0},"133":{o:true,d:0},"134":{o:false,d:0},"135":{o:false,d:0},"136":{o:false,d:0},"137":{o:true,d:0},"138":{o:false,d:0},"139":{o:true,d:0},"140":{o:false,d:0},"141":{o:true,d:1},"142":{o:true,d:0},"143":{o:false,d:0},"144":{o:false,d:0},"145":{o:false,d:0},"146":{o:true,d:0},"147":{o:false,d:0},"148":{o:true,d:0},"149":{o:false,d:0},"150":{o:false,d:0},"151":{o:false,d:0},"152":{o:false,d:0},"153":{o:true,d:0},"154":{o:false,d:0},"155":{o:false,d:0},"156":{o:false,d:0},"157":{o:true,d:0},"158":{o:false,d:0},"159":{o:false,d:0},"160":{o:true,d:1},"161":{o:true,d:0},"162":{o:false,d:0},"163":{o:true,d:1},"164":{o:false,d:0},"165":{o:false,d:0},"166":{o:false,d:0},"167":{o:false,d:0},"168":{o:false,d:0},"169":{o:true,d:0},"170":{o:true,d:0},"171":{o:true,d:0},"172":{o:true,d:0},"173":{o:true,d:0},"174":{o:false,d:0},"175":{o:false,d:0},"176":{o:false,d:0},"177":{o:true,d:0},"178":{o:false,d:0},"179":{o:true,d:0},"180":{o:false,d:0}};
-
-const SK = "bs_v2";
-let col = {};
-try {
-  const r = localStorage.getItem(SK);
-  col = r ? JSON.parse(r) : JSON.parse(JSON.stringify(INIT));
-} catch { col = JSON.parse(JSON.stringify(INIT)); }
-let et = 'o';
-
-function save() { try { localStorage.setItem(SK, JSON.stringify(col)); } catch {} }
-
-function tog(id) {
-  const c = col[id] || {o:false, d:0};
-  col[id] = {o: !c.o, d: c.o ? 0 : c.d};
-  save(); render();
-}
-function chd(id, delta) {
-  if (!col[id]) col[id] = {o:true, d:0};
-  col[id].d = Math.max(0, (col[id].d || 0) + delta);
-  save(); render();
-}
-function setET(t) { et = t; render(); }
-function resetAll() {
-  if (confirm('Naozaj vymazať celú zbierku a začať odznova?')) {
-    col = JSON.parse(JSON.stringify(INIT));
-    save(); render();
-  }
-}
-
-function render() {
-  const groups = [[1,45],[46,90],[91,135],[136,180]];
-  let html = '';
-  for (const [s, e] of groups) {
-    html += `<div>
-      <div class="group-hdr">
-        <span>No.</span><span style="text-align:center">1x</span><span style="padding-left:6px">2x</span>
-      </div>`;
-    for (let id = s; id <= e; id++) {
-      const c = col[id] || {o:false, d:0};
-      const nm = NAMES[id] || '';
-      html += `<div class="row">
-        <div class="cid"><span class="num">${id}</span> <span class="nm">${nm}</span></div>
-        <div><button class="chk${c.o?' on':''}" onclick="tog(${id})">${c.o ? '✓' : ''}</button></div>
-        <div class="dup">${c.o
-          ? `<button onclick="chd(${id},-1)"${c.d===0?' disabled':''}>−</button>
-             <span class="dup-n${c.d===0?' z':''}">${c.d}</span>
-             <button onclick="chd(${id},1)">+</button>`
-          : `<span style="color:#ccc;padding-left:4px">—</span>`
-        }</div>
-      </div>`;
-    }
-    html += '</div>';
-  }
-  document.getElementById('grid').innerHTML = html;
-
-  const owned = Object.keys(col).filter(k => col[k].o).length;
-  const dupes = Object.values(col).reduce((s,v) => s + (v.d||0), 0);
-  const missing = 180 - owned;
-  const pct = Math.round(owned / 180 * 100);
-
-  document.getElementById('footer').innerHTML = `
-    <div class="stat-box"><div class="stat-n">${180}</div><div class="stat-l">Celkom kariet</div></div>
-    <div class="stat-box"><div class="stat-n g">${owned}</div><div class="stat-l">Spolu máš</div></div>
-    <div class="stat-box"><div class="stat-n a">${dupes}</div><div class="stat-l">Viac x máš</div></div>
-    <div class="stat-box"><div class="stat-n r">${missing}</div><div class="stat-l">Chýba ti</div></div>`;
-
-  document.getElementById('prog').style.width = pct + '%';
-  document.getElementById('prog-pct').textContent = pct + '%';
-
-  document.getElementById('eb-o').className = 'btn' + (et==='o' ? ' act' : '');
-  document.getElementById('eb-m').className = 'btn' + (et==='m' ? ' act' : '');
-
-  let lines = [];
-  if (et === 'o') {
-    lines = Object.keys(col)
-      .filter(k => col[k].o)
-      .sort((a,b) => +a - +b)
-      .map(k => {
-        const d = col[k].d || 0;
-        return `#${k} ${NAMES[k]||''}${d > 0 ? ` (+${d}x duplikát)` : ''}`;
-      });
-  } else {
-    lines = Object.keys(col)
-      .filter(k => !col[k].o)
-      .sort((a,b) => +a - +b)
-      .map(k => `#${k} ${NAMES[k]||''}`);
-  }
-  document.getElementById('exp-cnt').textContent = lines.length + ' kariet';
-  document.getElementById('exp-box').textContent = lines.join('\n') || '(prázdne)';
-}
-
-function copyExp() {
-  const txt = document.getElementById('exp-box').textContent;
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(txt).then(() => {
-      const b = document.getElementById('cp-btn');
-      const orig = b.textContent;
-      b.textContent = '✓ Skopírované!';
-      b.className = 'btn cp';
-      setTimeout(() => { b.textContent = orig; b.className = 'btn'; }, 2000);
+    <!-- begin footer -->
+    <footer><p>Copyright &copy; 2016 OUTSIDE 
+     <p><img src="images/twitter.png" alt="twitter">&nbsp;<img src="images/facebook.png" alt="facebook">&nbsp;<img src="images/rss.png" alt="rss"></p>
+    </footer><!-- end footer -->
+</div>
+  <!-- javascript at the bottom for fast page loading -->
+  <script type="text/javascript" src="js/jquery.min.js"></script><script type="text/javascript" src="js/jquery.easing-sooper.js"></script><script type="text/javascript" src="js/jquery.sooperfish.js"></script><script type="text/javascript" src="js/image_fade.js"></script><!-- initialise sooperfish menu --><script type="text/javascript">
+    $(document).ready(function() {
+      $('ul.sf-menu').sooperfish();
     });
-  } else {
-    const ta = document.createElement('textarea');
-    ta.value = txt; document.body.appendChild(ta);
-    ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-    alert('Skopírované!');
-  }
-}
-
-render();
-</script>
+  </script>
 </body>
 </html>
